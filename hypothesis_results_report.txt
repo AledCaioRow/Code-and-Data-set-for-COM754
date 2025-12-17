@@ -1,0 +1,28 @@
+HYPOTHESIS TEST RESULTS (Z_composite)
+=============================================
+
+H1 — Emotional Complexity
+                    sum_sq       df          F    PR(>F)    eta_sq
+C(Complexity)     6.006063      1.0  13.413867  0.000251  0.000984
+Residual       6095.224550  13613.0        NaN       NaN       NaN
+
+Effect size (η²): 0.0010
+
+H2 — Emotional Valence
+                 sum_sq       df           F         PR(>F)    eta_sq
+C(Valence)   319.800373      1.0  753.004413  2.108817e-161  0.052416
+Residual    5781.430239  13613.0         NaN            NaN       NaN
+
+Effect size (η²): 0.0524
+
+H3 — Complexity × Valence Interaction
+                               sum_sq       df           F         PR(>F)    eta_sq
+C(Complexity)                5.948128      1.0   14.030986   1.805647e-04  0.000975
+C(Valence)                 319.742438      1.0  754.237645  1.176467e-161  0.052407
+C(Complexity):C(Valence)     5.398432      1.0   12.734314   3.602421e-04  0.000885
+Residual                  5770.083680  13611.0         NaN            NaN       NaN
+
+Effect sizes (η²):
+  Complexity: 0.0010
+  Valence: 0.0524
+  Interaction: 0.0009
