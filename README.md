@@ -1,173 +1,28 @@
 # Code-and-Data-set-for-COM754
 
-Overview
+This repository contains the code and processed data used for a quantitative study examining divergence between human and AI-generated empathetic listener responses across emotional contexts.
 
-This repository contains the full data and code pipeline for a quantitative study examining whether AI-generated empathetic listener responses align with human listener responses across different emotional contexts.
+The original dataset used is the EmpatheticDialogues training set created by Facebook Research. The full dataset could not be uploaded due to size restrictions and is available here:
+https://github.com/facebookresearch/EmpatheticDialogues
 
-The study uses the EmpatheticDialogues dataset, where emotional context is explicitly elicited from speakers, and introduces AI-generated listener responses under matched conversational conditions. Divergence is evaluated across sentiment, empathy, and emotion detection benchmarks, aggregated into a standardised composite measure.
+All analyses were conducted using the training split of this dataset.
 
-The primary focus is contextual bias: whether AI responses systematically diverge from human empathy in positive vs negative and simple vs complex emotional settings.
+The file “THE TEST.csv” is a small sample used only to test and validate the code pipeline and API prompting. It is not the dataset used for the final analysis.
 
-Repository Structure
-├── data/
-│   ├── ED dataset.csv
-│   ├── PreFilteredDataset.csv
-│   ├── The Final Dataset.csv
-│   └── THE TEST.csv
-│
-├── code/
-│   ├── Filtering.py
-│   ├── GPT API Prompter.py
-│   ├── dataset cealing.py
-│   ├── Descriptive Stats.py
-│   └── Analysis.py
-│
-└── README.md
+“The Final Dataset.csv” contains the processed dataset used for descriptive statistics and hypothesis testing. This file includes emotional category labels, human listener responses, AI-generated listener responses, and benchmark-derived divergence measures.
 
-Datasets
-ED dataset.csv
+The following Python scripts make up the analysis pipeline:
 
-Raw EmpatheticDialogues training data (~25,000 conversations).
-Each conversation includes:
+“Filtering.py” assigns emotional valence (positive or negative) and emotional complexity (simple or complex), removes ambiguous emotions, and balances the dataset across the 2×2 emotional framework at the conversation level.
 
-A speaker-elicited emotion
+“GPT API Prompter.py” generates AI-based empathetic listener responses using the OpenAI API. Responses are generated using stateless calls, with only prior speaker turns provided as context. Human listener responses and emotion labels are never shown to the model.
 
-A situation description
+“dataset cealing.py” cleans non-semantic artefacts such as placeholder tokens and encoding noise to prevent distortion of benchmark scores.
 
-Human listener responses
+“Descriptive Stats.py” produces descriptive statistics for the balanced dataset, including conversation counts and divergence summaries.
 
-Purpose:
-Provides human ground truth where emotional context is consciously selected by speakers rather than inferred post hoc.
+“Analysis.py” performs hypothesis testing using frequentist ANOVA, testing main effects of emotional complexity and emotional valence, as well as their interaction.
 
-PreFilteredDataset.csv
+The files “H1_complexity_anova.csv”, “H2_valence_anova.csv”, and “H3_interaction_anova.csv” contain the ANOVA output tables for each hypothesis. The file “hypothesis_results_report.txt” provides a plain-text summary of these results.
 
-Filtered subset of the ED dataset with:
-
-Ambiguous emotions removed
-
-Only emotions clearly classifiable by valence and complexity retained
-
-Purpose:
-Improves construct validity prior to AI generation.
-
-The Final Dataset.csv
-
-Main analysis dataset containing:
-
-Human listener responses
-
-AI-generated listener responses
-
-Emotional category labels
-
-Benchmark divergence scores
-
-Standardised composite outcome
-
-Purpose:
-Used for all descriptive and inferential analyses.
-
-THE TEST.csv
-
-Small validation subset.
-
-Purpose:
-Used to test API calls, prompt logic, and data integrity before full-scale generation.
-
-Code Description
-Filtering.py
-
-Assigns each conversation to a 2 × 2 emotional framework:
-
-Valence: Positive / Negative
-
-Complexity: Simple (ID) / Complex (OOD)
-
-Balances the dataset at the conversation level using stratified sampling.
-
-Purpose:
-Prevents confounding from unequal category representation.
-
-GPT API Prompter.py
-
-Generates AI empathetic listener responses using GPT-4.1 Mini.
-
-Key constraints:
-
-Stateless API calls (no cross-conversation memory)
-
-Only prior speaker turns provided as context
-
-Human listener responses never shown to the model
-
-Responses constrained to brief, empathetic replies
-
-Purpose:
-Ensures fair, matched comparison between human and AI responses.
-
-dataset cealing.py
-
-Cleans non-semantic artefacts including:
-
-EmpatheticDialogues placeholder tokens (e.g. _comma_)
-
-Encoding noise
-
-Excess whitespace
-
-Purpose:
-Prevents benchmark distortion due to NLP artefacts.
-
-Descriptive Stats.py
-
-Produces:
-
-Conversation and utterance counts per emotional category
-
-Distribution summaries
-
-Preliminary checks of divergence scores
-
-Purpose:
-Transparency and sanity-checking before hypothesis testing.
-
-Analysis.py
-
-Performs hypothesis testing using frequentist ANOVA:
-
-Main effect of emotional complexity
-
-Main effect of emotional valence
-
-Complexity × valence interaction
-
-Effect sizes are reported using η².
-
-Purpose:
-Formal statistical evaluation of AI–human divergence.
-
-Methodological Metadata
-
-Design: Quantitative, secondary-data, 2 × 2 factorial
-
-Unit of analysis: Listener responses
-
-Emotional context: Speaker-elicited (not post hoc inferred)
-
-Benchmarks: Sentiment, empathy, emotion detection
-
-Outcome: Standardised composite divergence score
-
-AI model: GPT-4.1 Mini
-
-Balancing: Conversation-level stratified sampling
-
-Notes for Reproducibility
-
-API calls require an OpenAI API key
-
-Test runs can be executed using THE TEST.csv
-
-All processing steps are modular and sequential
-
-No demographic or clinical claims are made
+This repository is intended for academic assessment and methodological transparency. The study does not evaluate clinical safety, therapeutic effectiveness, or demographic fairness.
